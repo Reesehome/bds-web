@@ -1,0 +1,259 @@
+html {
+  min-width: 320px;
+  overflow: hidden;
+}
+
+// 非标准盒模式：width 与 height 包括 padding 与 border，不包括 margin
+* {
+  box-sizing: border-box;
+}
+
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+body {
+  color: #333;
+  // 跨平台适应的字体族
+  font-family: Hiragino Sans GB, Hiragino Sans GB W3, Arial, Microsoft Yahei, STHeiti, sans-serif;
+  // 字体清晰度设置，只作用于 OSX 下高分屏
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// height: 100%
+a {
+  text-decoration: none;
+}
+
+ul,
+ol,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+// 禁止图片拖动
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+// 去除输入框的外部高亮
+input,
+button,
+textarea {
+  outline: 0;
+}
+
+button:-moz-focusring,
+input:-moz-focusring {
+  outline: 0;
+}
+
+// 解决 Font Boosting 问题
+p {
+  max-height: 100%;
+}
+
+.container {
+  width: 1350px;
+  margin: 0 auto;
+}
+
+.inner {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+.clearfix {
+  &::after {
+    clear: both;
+  }
+
+  &::before,
+  &::after {
+    display: table;
+    content: '';
+  }
+}
+
+.line-break {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+// 响应式布局样式
+@media (max-width: 768px) {
+  .hidden-xs {
+    display: none !important;
+  }
+
+  .xs-w100 {
+    width: 100% !important;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 768px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 960px) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
+.@{css-prefix}color {
+  &-dark {
+    background: @bds-color-dark;
+  }
+
+  &-primary {
+    background: @bds-color-primary;
+  }
+
+  &-light {
+    background: @bds-color-light;
+  }
+}
+
+// 1px伪元素边线 (注释部分用于处理移动端1px)
+.setLine(@color: @bds-color-line) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+  // width: 200%;
+  // height: 200%;
+  border: 1px solid @color;
+  color: @color;
+  content: '';
+  // transform-origin: left top;
+  // transform: scale(0.5)
+}
+.setTopLine(@color: @bds-color-line) {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  border-top: 1px solid @color;
+  color: @color;
+  transform-origin: 0 0;
+  content: '';
+  // transform: scaleY(0.5);
+}
+.setBottomLine(@color: @bds-color-line) {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  border-bottom: 1px solid @color;
+  color: @color;
+  transform-origin: 0 100%;
+  content: '';
+  // transform: scaleY(0.5);
+}
+.setLeftLine(@color: @bds-color-line) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  border-left: 1px solid @color;
+  color: @color;
+  transform-origin: 0 0;
+  content: '';
+  // transform: scaleX(0.5);
+}
+.setRightLine(@color: @bds-color-line) {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  color: @color;
+  transform-origin: 100% 0;
+  content: '';
+  border-right: 1px solid @color;
+  // transform: scaleX(0.5);
+}
+
+.line-all,
+.line-t,
+.line-b,
+.line-tb,
+.line-l,
+.line-r {
+  position: relative;
+}
+
+.line-all {
+  &::before {
+    .setLine()
+  }
+}
+
+.line-t {
+  &::before {
+    .setTopLine()
+  }
+}
+
+.line-b {
+  &::before {
+    .setBottomLine()
+  }
+}
+
+.line-tb {
+  &::before {
+    .setTopLine()
+  }
+
+  &::after {
+    .setBottomLine()
+  }
+}
+
+.line-l {
+  &::before {
+    .setLeftLine()
+  }
+}
+
+.line-r {
+  &::before {
+    .setRightLine()
+  }
+}

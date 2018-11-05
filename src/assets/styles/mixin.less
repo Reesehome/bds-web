@@ -1,0 +1,67 @@
+// 清除浮动
+.clearfix() {
+  &::after {
+    clear: both;
+  }
+
+  &::before,
+  &::after {
+    display: table;
+    content: '';
+  }
+}
+
+// 单行文本溢出
+.single-text-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gradient-btn(@width, @height) {
+  display: inline-block;
+  width: @width;
+  height: @height;
+  border-radius: 4px;
+  outline: none;
+  color: #fff;
+  background: #24b9ff;
+  line-height: @height;
+  text-align: center;
+  cursor: pointer;
+}
+
+.default-btn(@width, @height, @color) {
+  display: inline-block;
+  width: @width;
+  height: @height;
+  border: 1px solid @color;
+  border-radius: 4px;
+  color: @color;
+  font-size: 16px;
+  line-height: @height;
+  text-align: center;
+  cursor: pointer;
+}
+
+.company-icon(@width, @height, @color, @bgColor : #ffffff) {
+  display: inline-block;
+  width: @width;
+  height: @height;
+  border: 1px solid @color;
+  border-radius: 8px;
+  color: @color;
+  background: @bgColor;
+  font-size: 12px;
+  line-height: @height - 2px;
+  text-align: center;
+}
+
+.mix-block-with-img-center(@height) {
+  height: @height;
+  line-height: @height;
+
+  > img {
+    vertical-align: middle;
+  }
+}

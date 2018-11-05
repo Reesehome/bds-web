@@ -1,0 +1,32 @@
+@import '../../color.less';
+
+.systemConf-aside {
+  float: left;
+  width: 29%;
+  height: 100%;
+
+  .systemConf-tree {
+    height: 59%;
+    margin-bottom: 16px;
+  }
+
+  .systemConf-user {
+    height: 39%;
+  }
+}
+
+.systemConf-editor {
+  float: right;
+  width: 69%;
+}
+// 解决超出高度后卡片body出现滚动条
+.ivu-card {
+  &.ivu-card-bordered {
+    height: 100%;
+  }
+
+  .ivu-card-body {
+    height: calc(100% - 70px); // 70为ivu-card-head + ivu-card-body的padding-bottom // 无效？
+    overflow: auto; // 无效？
+  }
+}

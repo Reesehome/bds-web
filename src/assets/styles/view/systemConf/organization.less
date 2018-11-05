@@ -1,0 +1,81 @@
+@import '../../color.less';
+
+// 搜索输入框的搜索按钮样式
+.searchBtn {
+  color: @bds-color-dark;
+  transition: all .2s ease-in-out;
+
+  &:hover {
+    color: @bds-color-blue;
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(1.3);
+  }
+}
+// card内树形区块样式
+.inner-card-tree {
+  display: inline-block;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid @bds-color-line;
+  vertical-align: top;
+
+  h4 {
+    color: @bds-color-blue;
+    text-align: center;
+  }
+}
+// card-tab栏样式
+.actionTabs {
+  .actionTab {
+    position: relative;
+    display: inline-block;
+    height: 35px;
+    padding: 0 10px;
+    color: @bds-color-dark;
+    transition: all .2s;
+
+    &:hover {
+      color: @bds-color-blue;
+      cursor: pointer;
+    }
+  }
+
+  .currentTab {
+    color: @bds-color-blue;
+    font-weight: 600;
+
+    /* 下划线 */
+    &::after {
+      position: absolute;
+      top: 36px;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #2d8cf0;
+      content: '';
+    }
+  }
+}
+
+/*
+* 样式替换
+*/
+.ivu-card .ivu-card-body {
+  padding: 16px 20px;
+}
+
+.ivu-date-picker {
+  width: 100%;
+}
+
+.inner-card {
+  padding: 0;
+
+  .card-body {
+    padding: 0;
+  }
+}
