@@ -4,10 +4,18 @@
 @import 'transition.less';
 
 // layout样式
-.layout-content {
-  height: calc(100% - 60px);
-  padding: 20px 30px;
-  overflow-y: auto;
+.layoutContent {
+  height: calc(100% - 90px);// 90px为nav+footer
+  padding: 20px 30px 6px;
+  // overflow-y: auto; // 暂不需要页面滚动
+}
+
+.layoutFooter {
+  padding-right: 30px;
+  color: @bds-color-lightGrey;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: right;
 }
 
 // 导航栏配置按钮-下拉列表样式
@@ -36,6 +44,11 @@
     box-shadow: 0 8px 20px @bds-color-shadow !important;
   }
 
+  // 超出高度后让ivu-card-body出现滚动条
+  &.ivu-card-bordered {
+    height: 100%;
+  }
+
   .ivu-card-head {
     padding: 14px 15px;
     color: @bds-color-blue;
@@ -57,22 +70,18 @@
     right: 20px;
   }
 }
-// 卡片内区块样式
-.inner-card {
-  .card-head {
-    padding: 10px 20px;
-    border-radius: 3px;
-    margin-bottom: 30px;
+// 搜索输入框的搜索按钮样式
+.searchBtn {
+  color: @bds-color-dark;
+  transition: all .2s ease-in-out;
+
+  &:hover {
     color: @bds-color-blue;
-    background: @bds-color-lightBlue;
+    cursor: pointer;
   }
 
-  .card-body {
-    padding: 0 20px;
-
-    &:last-child {
-      margin-bottom: 30px;
-    }
+  &:active {
+    transform: scale(1.3);
   }
 }
 
@@ -84,6 +93,40 @@
 
   .ivu-select {
     text-align: left;
+  }
+}
+
+// card-tab栏样式
+.actionTabs {
+  .actionTab {
+    position: relative;
+    display: inline-block;
+    height: 35px;
+    padding: 0 10px;
+    color: @bds-color-dark;
+    transition: all .2s;
+
+    &:hover {
+      color: @bds-color-blue;
+      cursor: pointer;
+    }
+  }
+
+  .currentTab {
+    color: @bds-color-blue;
+    font-weight: 600;
+
+    /* 下划线 */
+    &::after {
+      position: absolute;
+      top: 36px;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #2d8cf0;
+      content: '';
+    }
   }
 }
 

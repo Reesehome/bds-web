@@ -1,154 +1,139 @@
 <template>
     <!-- 部门编辑及授权 -->
-    <section class="systemConf-editor xs-w100">
-        <i-card title="部门编辑及授权" icon="ios-cog">
-            <i-button type="primary" slot="extra" @click="handleSave" :loading="isSaveBtnLoading">保存</i-button>
-            <i-tabs size="small" type="card" :value="activeTab" @on-click="changeTab">
-                <i-tab-pane label="基本信息" name="baseInfoTab">
-                    <!-- 基本属性 -->
-                    <div class="inner-card">
-                        <p class="card-head">修改基本属性</p>
-                        <div class="card-body">
-                            <i-form ref="departmentData" :model="departmentData" :rules="ruleValidate" :label-width="120">
-                                <i-form-item label="上级部门" prop="parentName">
-                                    <i-input v-model="departmentData.parentName" disabled></i-input>
-                                </i-form-item>
-                                <i-form-item label="部门名称" prop="orgName">
-                                    <i-input type="text" v-model="departmentData.orgName" placeholder="请输入" />
-                                </i-form-item>
-                                <i-form-item label="部门类型" prop="typeId">
-                                    <i-select v-model="departmentData.typeId">
-                                        <i-option value="class">班组</i-option>
-                                        <i-option value="dept">部门</i-option>
-                                        <i-option value="group">集团</i-option>
-                                        <i-option value="company">公司</i-option>
-                                        <i-option value="position">岗位</i-option>
-                                    </i-select>
-                                </i-form-item>
-                                <i-form-item label="是否OA部门" prop="isOA">
-                                    <i-radio-group v-model="departmentData.isOA">
-                                        <i-radio label="Y">
-                                            <span>是</span>
-                                        </i-radio>
-                                        <i-radio label="N">
-                                            <span>否</span>
-                                        </i-radio>
-                                    </i-radio-group>
-                                </i-form-item>
-                                <i-form-item label="联系电话" prop="phone">
-                                    <i-input v-model="departmentData.phone" placeholder="请输入">
-                                    </i-input>
-                                </i-form-item>
-                                <i-form-item label="传真" prop="fax">
-                                    <i-input v-model="departmentData.fax" placeholder="请输入">
-                                    </i-input>
-                                </i-form-item>
-                                <i-form-item label="公务邮箱" prop="email">
-                                    <i-input v-model="departmentData.email" type="email" placeholder="请输入">
-                                    </i-input>
-                                </i-form-item>
-                                <i-form-item label="备注" prop="remark">
-                                    <i-input v-model="departmentData.remark" type="textarea" placeholder="请输入">
-                                    </i-input>
-                                </i-form-item>
-                            </i-form>
-                        </div>
-                    </div>
-                </i-tab-pane>
-                <i-tab-pane label="操作权限" name="operateRightsTab">
-                    <!-- 操作权限 -->
-                    <div class="inner-card">
-                        <p class="card-head">配置操作权限</p>
-                        <div class="card-body">
-                            <i-tree :data="orgAuthorizeGroupTree" show-checkbox></i-tree>
-                        </div>
-                    </div>
-                </i-tab-pane>
-                <i-tab-pane label="数据权限" name="dataRightsTab">
-                    <!-- 数据权限 -->
-                    <div class="inner-card">
-                        <p class="card-head">配置数据权限</p>
-                        <div class="card-body">
-                            <div class="inner-card-tree" style="width:39%">
-                                <h4>权限目录</h4>
-                                <i-tree :data="orgDataAuthorityTree"></i-tree>
-                            </div>
-                            <div class="inner-card-tree" style="width:49%">
-                                <h4>权限分配</h4>
-                                <i-tree :data="orgRightsDataTree" show-checkbox></i-tree>
-                            </div>
-                        </div>
-                    </div>
-                </i-tab-pane>
-                <i-tab-pane label="部门人员" name="userPreviewTab">
-                    <!-- 部门人员预览 -->
-                    <div class="inner-card">
-                        <p class="card-head">部门人员预览</p>
-                        <div class="card-body">
-                            <i-table stripe :columns="userCols" :data="getOrdUsers()" :border="true"></i-table>
-                            <div class="pagination-wrapper">
-                                <div class="pagination">
-                                    <i-page :total="20" :current="1" @on-change="changePage"></i-page>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </i-tab-pane>
-                <i-tab-pane label="部门领导" name="leaderPreviewTab">
-                    <!-- 部门领导预览 -->
-                    <div class="inner-card">
-                        <p class="card-head">部门领导预览</p>
-                        <!-- 操作按钮 -->
-                        <div class="actionBlock">
-                            <i-input placeholder="用户名查询" style="width: auto">
-                                <i-icon type="ios-search" slot="suffix" class="searchBtn" />
+    <i-card title="部门编辑及授权" icon="ios-cog">
+        <i-button type="primary" slot="extra" @click="handleSave" :loading="isSaveBtnLoading">保存</i-button>
+        <i-tabs size="small" type="card" :value="activeTab" @on-click="changeTab">
+            <i-tab-pane label="基本信息" name="baseInfoTab">
+                <!-- 基本属性 -->
+                <inner-card title="修改基本属性">
+                    <i-form ref="departmentData" :model="departmentData" :rules="ruleValidate" :label-width="120">
+                        <i-form-item label="上级部门" prop="parentName">
+                            <i-input v-model="departmentData.parentName" disabled></i-input>
+                        </i-form-item>
+                        <i-form-item label="部门名称" prop="orgName">
+                            <i-input type="text" v-model="departmentData.orgName" placeholder="请输入" />
+                        </i-form-item>
+                        <i-form-item label="部门类型" prop="typeId">
+                            <i-select v-model="departmentData.typeId">
+                                <i-option value="class">班组</i-option>
+                                <i-option value="dept">部门</i-option>
+                                <i-option value="group">集团</i-option>
+                                <i-option value="company">公司</i-option>
+                                <i-option value="position">岗位</i-option>
+                            </i-select>
+                        </i-form-item>
+                        <i-form-item label="是否OA部门" prop="isOA">
+                            <i-radio-group v-model="departmentData.isOA">
+                                <i-radio label="Y">
+                                    <span>是</span>
+                                </i-radio>
+                                <i-radio label="N">
+                                    <span>否</span>
+                                </i-radio>
+                            </i-radio-group>
+                        </i-form-item>
+                        <i-form-item label="联系电话" prop="phone">
+                            <i-input v-model="departmentData.phone" placeholder="请输入">
                             </i-input>
-                            <i-button @click="showLeaderModal = true">新增</i-button>
-                            <i-button>删除</i-button>
-                        </div>
-                        <div class="card-body">
-                            <i-table stripe :columns="leaderCols" :data="orgLeaders" :border="true" :loading="isLeaderListLoading"></i-table>
-                            <div class="pagination-wrapper">
-                                <div class="pagination">
-                                    <i-page :total="100" :current="1" @on-change="changePage"></i-page>
-                                </div>
-                            </div>
+                        </i-form-item>
+                        <i-form-item label="传真" prop="fax">
+                            <i-input v-model="departmentData.fax" placeholder="请输入">
+                            </i-input>
+                        </i-form-item>
+                        <i-form-item label="公务邮箱" prop="email">
+                            <i-input v-model="departmentData.email" type="email" placeholder="请输入">
+                            </i-input>
+                        </i-form-item>
+                        <i-form-item label="备注" prop="remark">
+                            <i-input v-model="departmentData.remark" type="textarea" placeholder="请输入">
+                            </i-input>
+                        </i-form-item>
+                    </i-form>
+                </inner-card>
+            </i-tab-pane>
+            <i-tab-pane label="操作权限" name="operateRightsTab">
+                <!-- 操作权限 -->
+                <inner-card title="配置操作权限">
+                    <i-tree :data="orgAuthorizeGroupTree" show-checkbox></i-tree>
+                </inner-card>
+            </i-tab-pane>
+            <i-tab-pane label="数据权限" name="dataRightsTab">
+                <!-- 数据权限 -->
+                <inner-card title="配置数据权限">
+                    <i-row gutter="24">
+                        <i-col :sm="10" :xs="24">
+                            <inner-tree title="权限目录" :data="orgDataAuthorityTree"></inner-tree>
+                        </i-col>
+                        <i-col :sm="14" :xs="24">
+                            <inner-tree title="权限分配" :data="orgRightsDataTree" show-checkbox></inner-tree>
+                        </i-col>
+                    </i-row>
+                </inner-card>
+            </i-tab-pane>
+            <i-tab-pane label="部门人员" name="userPreviewTab">
+                <!-- 部门人员预览 -->
+                <inner-card title="部门人员预览">
+                    <i-table stripe :columns="userCols" :data="getOrdUsers()" :border="true"></i-table>
+                    <div class="pagination-wrapper">
+                        <div class="pagination">
+                            <i-page :total="20" :current="1" @on-change="changePage"></i-page>
                         </div>
                     </div>
-                    <!-- 模态框 -->
-                    <i-modal v-model="showLeaderModal" title="新增领导" class="leaderModal">
-                        <i-form :model="setLeaderForm" :label-width="160">
-                            <i-form-item label="领导类型">
-                                <i-select v-model="setLeaderForm.leaderType">
-                                    <i-option value="beijing">总经理</i-option>
-                                    <i-option value="shanghai">副总经理</i-option>
-                                    <i-option value="shenzhen">经理</i-option>
-                                    <i-option value="shenzhen">副经理</i-option>
-                                    <i-option value="shenzhen">秘书</i-option>
-                                    <i-option value="shenzhen">报销员</i-option>
-                                </i-select>
-                            </i-form-item>
-                            <i-form-item label="用户名、首字母或账号">
-                                <i-input v-model="setLeaderForm.searchText" :search="true" :enter-button="true" />
-                            </i-form-item>
-                        </i-form>
-                        <i-table stripe :columns="leaderCols" :data="orgLeaders" :border="true" :loading="isLeaderListLoading"></i-table>
-                        <div class="pagination-wrapper">
-                            <div class="pagination">
-                                <i-page :total="100" :current="1" @on-change="changePage"></i-page>
-                            </div>
+                </inner-card>
+            </i-tab-pane>
+            <i-tab-pane label="部门领导" name="leaderPreviewTab">
+                <!-- 部门领导预览 -->
+                <inner-card title="部门领导预览">
+                    <!-- 操作按钮 -->
+                    <div class="actionBlock">
+                        <i-input placeholder="用户名查询" style="width: auto">
+                            <i-icon type="ios-search" slot="suffix" class="searchBtn" />
+                        </i-input>
+                        <i-button @click="showLeaderModal = true">新增</i-button>
+                        <i-button>删除</i-button>
+                    </div>
+                    <i-table stripe :columns="leaderCols" :data="orgLeaders" :border="true" :loading="isLeaderListLoading"></i-table>
+                    <div class="pagination-wrapper">
+                        <div class="pagination">
+                            <i-page :total="100" :current="1" @on-change="changePage"></i-page>
                         </div>
-                    </i-modal>
-                </i-tab-pane>
-            </i-tabs>
-        </i-card>
-    </section>
+                    </div>
+                </inner-card>
+                <!-- 模态框 -->
+                <i-modal v-model="showLeaderModal" title="新增领导" class="leaderModal">
+                    <i-form :model="setLeaderForm" :label-width="160">
+                        <i-form-item label="领导类型">
+                            <i-select v-model="setLeaderForm.leaderType">
+                                <i-option value="beijing">总经理</i-option>
+                                <i-option value="shanghai">副总经理</i-option>
+                                <i-option value="shenzhen">经理</i-option>
+                                <i-option value="shenzhen">副经理</i-option>
+                                <i-option value="shenzhen">秘书</i-option>
+                                <i-option value="shenzhen">报销员</i-option>
+                            </i-select>
+                        </i-form-item>
+                        <i-form-item label="用户名、首字母或账号">
+                            <i-input v-model="setLeaderForm.searchText" :search="true" :enter-button="true" />
+                        </i-form-item>
+                    </i-form>
+                    <i-table stripe :columns="leaderCols" :data="orgLeaders" :border="true" :loading="isLeaderListLoading"></i-table>
+                    <div class="pagination-wrapper">
+                        <div class="pagination">
+                            <i-page :total="100" :current="1" @on-change="changePage"></i-page>
+                        </div>
+                    </div>
+                </i-modal>
+            </i-tab-pane>
+        </i-tabs>
+    </i-card>
 </template>
 
 <script>
 import {organization} from 'API'
 import {replaceArrLabel} from 'UTIL/assist'
 import {isFax} from 'UTIL/validate'
+import InnerCard from 'WIDGET/inner/InnerCard'
+import InnerTree from 'WIDGET/inner/InnerTree'
 
 export default {
     name: 'org-department',
@@ -241,6 +226,10 @@ export default {
                 remark: [{max: 200, message: '格式错误：长度不应超出200', trigger: 'blur'}]
             }
         }
+    },
+    components: {
+        InnerCard,
+        InnerTree
     },
     methods: {
         changeTab (name) {

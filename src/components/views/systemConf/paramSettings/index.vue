@@ -1,23 +1,25 @@
 <template>
     <div id="paramSettings">
-        <i-card title="系统参数查询" icon="ios-cog">
-            <!-- 功能按钮区 -->
-            <div class="actionBlock">
-                <i-input placeholder="变量关键字或变量值" style="width: auto">
-                    <i-icon type="ios-search" slot="suffix" class="searchBtn" />
-                </i-input>
-                <i-button @click="isShowModal = true; paramListItem = {};modalType = 'add'">新增</i-button>
-                <i-button @click="clickEditBtn">编辑</i-button>
-                <i-button>删除</i-button>
-            </div>
-            <!-- 列表 -->
-            <i-table stripe :columns="paramListCols" :data="paramList" @on-selection-change="handleSelectParam" :loading="isListLoading"></i-table>
-            <!-- 分页 -->
-            <div class="pagination-wrapper">
-                <div class="pagination">
-                    <i-page :total="10" :current="1"></i-page>
+        <i-card title="系统参数" icon="ios-cog">
+            <inner-card title="编辑区域">
+                <!-- 功能按钮区 -->
+                <div class="actionBlock">
+                    <i-input placeholder="变量关键字或变量值" style="width: auto">
+                        <i-icon type="ios-search" slot="suffix" class="searchBtn" />
+                    </i-input>
+                    <i-button @click="isShowModal = true; paramListItem = {};modalType = 'add'">新增</i-button>
+                    <i-button @click="clickEditBtn">编辑</i-button>
+                    <i-button>删除</i-button>
                 </div>
-            </div>
+                <!-- 列表 -->
+                <i-table stripe :columns="paramListCols" :data="paramList" @on-selection-change="handleSelectParam" :loading="isListLoading"></i-table>
+                <!-- 分页 -->
+                <div class="pagination-wrapper">
+                    <div class="pagination">
+                        <i-page :total="10" :current="1"></i-page>
+                    </div>
+                </div>
+            </inner-card>
         </i-card>
         <!-- 新增／修改模态框 -->
         <i-modal v-model="isShowModal" :title="`${modalTypeConst[modalType]}系统参数`">
@@ -44,6 +46,7 @@
 
 <script>
 import {paramSettings} from 'API'
+import InnerCard from 'WIDGET/inner/InnerCard'
 export default {
     data () {
         return {
@@ -81,6 +84,9 @@ export default {
             isListLoading: false,
             isShowModal: false
         }
+    },
+    components: {
+        InnerCard
     },
     methods: {
         // 获取所有系统参数

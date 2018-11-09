@@ -16,25 +16,24 @@
                 <i-button>搜索</i-button>
                 <i-button @click="handleReset">重置</i-button>
             </div>
-            <div class="inner-card">
-                <div class="card-head">查询结果</div>
-                <div class="card-body">
-                    <!-- 列表 -->
-                    <i-table stripe ref="logList" :columns="logListCols" :data="logList" :loading="isListLoading"></i-table>
-                    <!-- 分页 -->
-                    <div class="pagination-wrapper">
-                        <div class="pagination">
-                            <i-page :total="10" :current="1"></i-page>
-                        </div>
+            <inner-card title="查询结果">
+                <!-- 列表 -->
+                <i-table stripe ref="logList" :columns="logListCols" :data="logList" :loading="isListLoading"></i-table>
+                <!-- 分页 -->
+                <div class="pagination-wrapper">
+                    <div class="pagination">
+                        <i-page :total="10" :current="1"></i-page>
                     </div>
                 </div>
-            </div>
+            </inner-card>
         </i-card>
     </div>
 </template>
 
 <script>
 import {log} from 'API'
+import InnerCard from 'WIDGET/inner/InnerCard'
+
 export default {
     data () {
         return {
@@ -120,14 +119,21 @@ export default {
                     key: 'logCount'
                 }
             ],
-            logList: []
+            logList: [],
+            isListLoading: false
         }
+    },
+    components: {
+        InnerCard
     },
     methods: {
         getLoginLog () {
+            this.isListLoading = true
             log.getLoginLog({}).then(res => {
                 this.logList = res.data.rows
+                this.isListLoading = false
             }).catch(err => {
+                this.isListLoading = false
                 this.$Message.error(err.message)
             })
         },

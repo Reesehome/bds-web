@@ -1,97 +1,80 @@
 <template>
-    <div id="operatePermission" class="clearfix">
+    <system-conf id="operatePermission">
         <!-- 菜单目录 -->
-        <aside class="systemConf-aside xs-w100">
-            <i-card title="操作权限组列表" icon="ios-cog">
-                <div slot="extra">
-                    <i-button type="default" shape="circle" icon="md-add"></i-button>
-                    <i-button type="default" shape="circle" icon="md-trash"></i-button>
-                </div>
-                <i-tree :data="operateRightsGroupTree" show-checkbox></i-tree>
-            </i-card>
-        </aside>
+        <system-aside slot="systemAside" title="操作权限组列表" show-checkbox :asideTree="operateRightsGroupTree">
+            <div slot="actionBlock">
+                <i-button type="default" shape="circle" icon="md-add"></i-button>
+                <i-button type="default" shape="circle" icon="md-trash"></i-button>
+            </div>
+        </system-aside>
         <!-- 编辑区 -->
-        <aside class="systemConf-editor xs-w100">
-            <i-card title="操作权限-编辑区" icon="ios-cog">
-                <i-button slot="extra" type="primary">保存</i-button>
-                <i-tabs size="small" type="card" :value="activeTab">
-                    <!-- 基本信息 -->
-                    <i-tab-pane label="基本信息" name="baseInfoTab">
-                        <div class="inner-card">
-                            <div class="card-head">修改基本信息</div>
-                            <div class="card-body">
-                                <i-form :label-width="100">
-                                    <i-form-item label="名称">
-                                        <i-input type="text" />
-                                    </i-form-item>
-                                    <i-form-item label="描述">
-                                        <i-input type="textarea" />
-                                    </i-form-item>
-                                </i-form>
+        <i-card slot="systemEditor" title="操作权限-编辑区" icon="ios-cog">
+            <i-button slot="extra" type="primary">保存</i-button>
+            <i-tabs size="small" type="card" :value="activeTab">
+                <!-- 基本信息 -->
+                <i-tab-pane label="基本信息" name="baseInfoTab">
+                    <inner-card title="修改基本信息">
+                        <i-form :label-width="100">
+                            <i-form-item label="名称">
+                                <i-input type="text" />
+                            </i-form-item>
+                            <i-form-item label="描述">
+                                <i-input type="textarea" />
+                            </i-form-item>
+                        </i-form>
+                    </inner-card>
+                </i-tab-pane>
+                <!-- 包含的权限 -->
+                <i-tab-pane label="包含的权限" name="constituteTab">
+                    <inner-card title="修改权限">
+                        <i-tree :data="operateRightsTree" show-checkbox></i-tree>
+                    </inner-card>
+                </i-tab-pane>
+                <!-- 部门授权 -->
+                <i-tab-pane label="部门授权" name="AuthorizeTab">
+                    <inner-card title="分配操作权限">
+                        <i-tree :data="departmentTree" show-checkbox></i-tree>
+                    </inner-card>
+                </i-tab-pane>
+                <!-- 已授权的部门 -->
+                <i-tab-pane label="已授权的部门" name="departmentPrviewTab">
+                    <inner-card title="预览所有已授权的部门">
+                        <div class="actionBlock">
+                            <i-input search placeholder="请输入名称或首字母" style="width:auto" />
+                            <i-button>重置</i-button>
+                        </div>
+                        <i-table stripe :columns="specificDepartmentCols" :data="specificDepartment" :border="true" :highlight-row="true"></i-table>
+                        <div style="margin: 10px;overflow: hidden">
+                            <div style="float: right;">
+                                <i-page :total="10" :current="1"></i-page>
                             </div>
                         </div>
-                    </i-tab-pane>
-                    <!-- 包含的权限 -->
-                    <i-tab-pane label="包含的权限" name="constituteTab">
-                        <div class="inner-card">
-                            <div class="card-head">修改权限</div>
-                            <div class="card-body">
-                                <i-tree :data="operateRightsTree" show-checkbox></i-tree>
+                    </inner-card>
+                </i-tab-pane>
+                <!-- 已授权的用户 -->
+                <i-tab-pane label="已授权的用户" name="userPreviewTab">
+                    <inner-card title="预览所有已授权的用户">
+                        <div class="actionBlock">
+                            <i-input search placeholder="请输入用户名、用户名首字母或登录账号" style="width:50%" />
+                            <i-button>重置</i-button>
+                        </div>
+                        <i-table stripe :columns="specificUserCols" :data="specificUser" :border="true" :highlight-row="true"></i-table>
+                        <div style="margin: 10px;overflow: hidden">
+                            <div style="float: right;">
+                                <i-page :total="10" :current="1"></i-page>
                             </div>
                         </div>
-                    </i-tab-pane>
-                    <!-- 部门授权 -->
-                    <i-tab-pane label="部门授权" name="AuthorizeTab">
-                        <div class="inner-card">
-                            <div class="card-head">分配操作权限</div>
-                            <div class="card-body">
-                                <i-tree :data="departmentTree" show-checkbox></i-tree>
-                            </div>
-                        </div>
-                    </i-tab-pane>
-                    <!-- 已授权的部门 -->
-                    <i-tab-pane label="已授权的部门" name="departmentPrviewTab">
-                        <div class="inner-card">
-                            <div class="card-head">预览所有已授权的部门</div>
-                            <div class="card-body">
-                                <div class="actionBlock">
-                                    <i-input search placeholder="请输入名称或首字母" style="width:auto" />
-                                    <i-button>重置</i-button>
-                                </div>
-                                <i-table stripe :columns="specificDepartmentCols" :data="specificDepartment" :border="true" :highlight-row="true"></i-table>
-                                <div style="margin: 10px;overflow: hidden">
-                                    <div style="float: right;">
-                                        <i-page :total="10" :current="1"></i-page>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </i-tab-pane>
-                    <!-- 已授权的用户 -->
-                    <i-tab-pane label="已授权的用户" name="userPreviewTab">
-                        <div class="inner-card">
-                            <div class="card-head">预览所有已授权的用户</div>
-                            <div class="card-body">
-                                <div class="actionBlock">
-                                    <i-input search placeholder="请输入用户名、用户名首字母或登录账号" style="width:50%" />
-                                    <i-button>重置</i-button>
-                                </div>
-                                <i-table stripe :columns="specificUserCols" :data="specificUser" :border="true" :highlight-row="true"></i-table>
-                                <div style="margin: 10px;overflow: hidden">
-                                    <div style="float: right;">
-                                        <i-page :total="10" :current="1"></i-page>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </i-tab-pane>
-                </i-tabs>
-            </i-card>
-        </aside>
-    </div>
+                    </inner-card>
+                </i-tab-pane>
+            </i-tabs>
+        </i-card>
+    </system-conf>
 </template>
 
 <script>
+import SystemConf from 'VIEW/layout/SystemConf'
+import SystemAside from 'WIDGET/systemAside/SystemAside'
+import InnerCard from 'WIDGET/inner/InnerCard'
 import {organization, operateRights} from 'API'
 import {replaceArrLabel} from 'UTIL/assist'
 
@@ -139,6 +122,11 @@ export default {
 
                 }]
         }
+    },
+    components: {
+        SystemConf,
+        SystemAside,
+        InnerCard
     },
     methods: {
         // 获取操作权限组树结构
@@ -213,6 +201,9 @@ export default {
             }).catch(err => {
                 this.$Message.error(err.message)
             })
+        },
+        getSelectedNode () {
+
         }
     },
     mounted () {

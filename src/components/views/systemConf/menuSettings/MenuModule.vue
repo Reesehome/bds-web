@@ -1,20 +1,22 @@
 <template>
     <div>
-        <i-card title="菜单模块编辑" icon="ios-cog">
-            <div class="actionBlock">
-                <i-input placeholder="用户名查询" style="width: auto">
-                    <i-icon type="ios-search" slot="suffix" class="searchBtn" />
-                </i-input>
-                <i-button @click="clickAddBtn" type="primary">新增</i-button>
-                <!-- <i-button @click="showEditModal = true;">编辑</i-button> -->
-                <!-- <i-button>删除</i-button> -->
-            </div>
-            <i-table stripe :columns="menuModuleCols" :data="menuModuleData" :border="true" :loading="isListLoading"></i-table>
-            <div class="pagination-wrapper">
-                <div class="pagination">
-                    <i-page :total="100" :current="1" @on-change="changePage"></i-page>
+        <i-card title="菜单模块管理" icon="ios-cog">
+            <inner-card title="编辑区域">
+                <div class="actionBlock">
+                    <i-input placeholder="用户名查询" style="width: auto">
+                        <i-icon type="ios-search" slot="suffix" class="searchBtn" />
+                    </i-input>
+                    <i-button @click="clickAddBtn" type="primary">新增</i-button>
+                    <!-- <i-button @click="showEditModal = true;">编辑</i-button> -->
+                    <!-- <i-button>删除</i-button> -->
                 </div>
-            </div>
+                <i-table stripe :columns="menuModuleCols" :data="menuModuleData" :border="true" :loading="isListLoading"></i-table>
+                <div class="pagination-wrapper">
+                    <div class="pagination">
+                        <i-page :total="100" :current="1" @on-change="changePage"></i-page>
+                    </div>
+                </div>
+            </inner-card>
         </i-card>
         <!-- 新增、编辑模态框 -->
         <i-modal v-model="showEditModal">
@@ -42,6 +44,7 @@
 
 <script>
 import {menuModule} from 'API'
+import InnerCard from 'WIDGET/inner/InnerCard'
 export default {
     data () {
         return {
@@ -107,6 +110,9 @@ export default {
             isAddModule: true,
             moduleData: {}
         }
+    },
+    components: {
+        InnerCard
     },
     methods: {
         // 获取列表数据

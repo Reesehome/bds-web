@@ -1,90 +1,82 @@
 <template>
-    <div id="organization" class="clearfix">
-        <aside class="systemConf-aside xs-w100">
-            <!-- 菜单目录 -->
-            <section class="systemConf-tree">
-                <i-card title="部门编辑及授权" icon="ios-cog">
-                    <div slot="extra" class="actionTabs">
-                        <span class="actionTab" :class="{'currentTab': currentTab === 1}" @click="currentTab = 1">目录</span>
-                        <span class="actionTab" :class="{'currentTab': currentTab === 2}" @click="currentTab = 2">查询</span>
+    <system-conf id="organization">
+        <!-- 菜单目录 -->
+        <!-- currentTab为1时（目录tab栏）默认内容为树结构 -->
+        <system-aside slot="systemAside" title="部门编辑及授权" :showDefaultContent="currentTab === 1" :asideTree="orgDepartmentTree" @sendTreeNode="selectOrgDepartment" style="height:48%">
+            <!-- 操作区：tab栏 -->
+            <div slot="actionBlock" class="actionTabs">
+                <span class="actionTab" :class="{'currentTab': currentTab === 1}" @click="currentTab = 1">目录</span>
+                <span class="actionTab" :class="{'currentTab': currentTab === 2}" @click="currentTab = 2">查询</span>
+            </div>
+            <!--  查询tab栏的内容区 -->
+            <div slot="content" v-show="currentTab === 2">
+                <i-radio-group v-model="searchType" @on-change="changeSearchType">
+                    <i-radio label="department">
+                        <span>部门</span>
+                    </i-radio>
+                    <i-radio label="user">
+                        <span>用户</span>
+                    </i-radio>
+                </i-radio-group>
+                <div style="margin-top:30px;">
+                    <p style="margin-bottom:10px">请输入{{searchType}}名称：</p>
+                    <i-input v-model="searchText" :search="true" :enter-button="true">
+                    </i-input>
+                </div>
+            </div>
+        </system-aside>
+        <!-- 用户列表 -->
+        <system-aside slot="systemAside" title="用户列表" style="height:48%" :showDefaultContent="false">
+            <!-- 操作区 -->
+            <div slot="actionBlock">
+                <i-button @click="addOrgUser">新增</i-button>
+                <i-button>删除</i-button>
+            </div>
+            <!-- 内容区 -->
+            <div slot="content">
+                <i-table stripe :columns="orgUsersCols" :data="orgUsersData" :border="true" :highlight-row="true" @on-row-click="selectOrgUser" :loading="isOrgUsersLoading"></i-table>
+                <div class="pagination-wrapper">
+                    <div class="pagination">
+                        <i-page :total="100" :current="1" @on-change="changePage" size="small"></i-page>
                     </div>
-                    <!-- 过渡还未实现 -->
-                    <transition name="fade">
-                        <div class="actionContents">
-                            <!-- 目录 -->
-                            <div class="actionContent" v-show="currentTab === 1">
-                                <i-tree :data="orgDepartmentTree" @on-select-change="selectOrgDepartment"></i-tree>
-                            </div>
-                            <!-- 查询 -->
-                            <div class="actionContent" v-show="currentTab === 2">
-                                <i-radio-group v-model="searchType" @on-change="changeSearchType">
-                                    <i-radio label="department">
-                                        <span>部门</span>
-                                    </i-radio>
-                                    <i-radio label="user">
-                                        <span>用户</span>
-                                    </i-radio>
-                                </i-radio-group>
-                                <div style="margin-top:30px;">
-                                    <p style="margin-bottom:10px">请输入{{searchType}}名称：</p>
-                                    <i-input v-model="searchText" :search="true" :enter-button="true">
-                                    </i-input>
-                                </div>
-                            </div>
-                        </div>
-                    </transition>
-                </i-card>
-            </section>
-            <!-- 用户列表 -->
-            <transition name="fadeIn">
-                <section class="systemConf-user">
-                    <i-card title="用户列表" icon="ios-cog">
-                        <div class="actionBlock">
-                            <i-button @click="addOrgUser">新增</i-button>
-                            <i-button>删除</i-button>
-                        </div>
-                        <i-table stripe :columns="orgUsersCols" :data="orgUsersData" :border="true" :highlight-row="true" @on-row-click="selectOrgUser" :loading="isOrgUsersLoading"></i-table>
-                        <div class="pagination-wrapper">
-                            <div class="pagination">
-                                <i-page :total="100" :current="1" @on-change="changePage" size="small"></i-page>
-                            </div>
-                        </div>
-                    </i-card>
-                </section>
-            </transition>
-            <!-- 部门列表 待需求完善-->
-            <transition name="fadeIn">
-                <section class="systemConf-department" style="display:none">
-                    <i-card title="部门列表" icon="ios-cog">
-                        <div class="actionBlock">
-                            <i-button @click="addOrgUser">新增</i-button>
-                            <i-button>删除</i-button>
-                        </div>
-                        <i-table stripe :columns="orgUsersCols" :data="orgUsersData" :border="true" :highlight-row="true" @on-row-click="selectOrgUser"></i-table>
-                        <div style="margin: 10px;overflow: hidden">
-                            <div style="float: right;">
-                                <i-page :total="100" :current="1" @on-change="changePage" size="small"></i-page>
-                            </div>
-                        </div>
-                    </i-card>
-                </section>
-            </transition>
-        </aside>
+                </div>
+            </div>
+        </system-aside>
+        <!-- 部门列表 待需求完善-->
+        <system-aside slot="systemAside" title="部门列表" style="height:48%;display:none" :showDefaultContent="false">
+            <!-- 操作区 -->
+            <div slot="actionBlock">
+                <i-button @click="addOrgUser">新增</i-button>
+                <i-button>删除</i-button>
+            </div>
+            <!-- 内容区 -->
+            <div slot="content">
+                <i-table stripe :columns="orgUsersCols" :data="orgUsersData" :border="true" :highlight-row="true" @on-row-click="selectOrgUser"></i-table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <i-page :total="100" :current="1" @on-change="changePage" size="small"></i-page>
+                    </div>
+                </div>
+            </div>
+        </system-aside>
 
         <!-- 属性编辑区 -->
-        <transition name="fadeIn">
-            <org-department :newDepartment="isNewDepartment" :activeTab="activeTab" :departmentData="orgDepartmentData" v-show="searchType==='department'"></org-department>
-        </transition>
-        <transition name="fadeIn">
-            <org-user :newUser="isNewUser" :activeTab="activeTab" :userData="orgUserData" v-show="searchType==='user'"></org-user>
-        </transition>
-
-    </div>
+        <div slot="systemEditor" style="height:100%">
+            <transition name="fadeIn">
+                <org-department :newDepartment="isNewDepartment" :activeTab="activeTab" :departmentData="orgDepartmentData" v-show="searchType==='department'"></org-department>
+            </transition>
+            <transition name="fadeIn">
+                <org-user :newUser="isNewUser" :activeTab="activeTab" :userData="orgUserData" v-show="searchType==='user'"></org-user>
+            </transition>
+        </div>
+    </system-conf>
 </template>
 
 <script>
-import orgDepartment from './OrgDepartment-editor'
-import orgUser from './OrgUser-editor'
+import SystemConf from 'VIEW/layout/SystemConf'
+import SystemAside from 'WIDGET/systemAside/SystemAside'
+import OrgDepartment from './OrgDepartment-editor'
+import OrgUser from './OrgUser-editor'
 import {organization} from 'API'
 import dayjs from 'dayjs'
 
@@ -119,8 +111,10 @@ export default {
         }
     },
     components: {
-        orgDepartment,
-        orgUser
+        SystemConf,
+        SystemAside,
+        OrgDepartment,
+        OrgUser
     },
     methods: {
         // 切换搜索类型
