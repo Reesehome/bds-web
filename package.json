@@ -1,8 +1,8 @@
 {
     "name": "bds-web",
     "version": "1.0.0",
-    "description": "天讯基础平台前端脚手架平台",
-    "author": "Zain <934006704@qq.com>",
+    "description": "基础平台前端脚手架平台",
+    "author": "Reese <reesegz@163.com>",
     "private": true,
     "scripts": {
         "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

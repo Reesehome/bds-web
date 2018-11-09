@@ -3,7 +3,7 @@
         <!--导航栏部分-->
         <bds-nav :theme="theme" :menus="menus" @on-select="toPath"></bds-nav>
         <router-view class="layoutContent" />
-        <footer class="layoutFooter">Copyright © 2018 Tisson. All Rights Reserved. 天讯瑞达公司 版权所有</footer>
+        <footer class="layoutFooter">Copyright © 2018 Reese. All Rights Reserved. Reese 版权所有</footer>
     </div>
 </template>
 
